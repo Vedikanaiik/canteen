@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Corner Canteen</title>
+    <style>
+        /* --- Reset & Basic Styles --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: #d9534f;
+            color: white;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #f0ad4e;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80') center/cover;
+            height: 40vh;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+        }
+
+        /* --- Menu Section --- */
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            color: #d9534f;
+        }
+
+        /* Category Filter Buttons */
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: white;
+            border: 2px solid #d9534f;
+            color: #d9534f;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .menu-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .item-price {
+            color: #d9534f;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .item-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .order-btn {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .order-btn:hover {
+            background-color: #4cae4c;
+        }
+
+        /* --- Footer / Contact --- */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Hide elements based on filter */
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Campus Canteen</h1>
+        <nav>
+            <a href="#hero">Home</a>
+            <a href="#menu">Menu</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero" id="hero">
+        <h2>Fresh & Tasty Meals Every Day</h2>
+        <p>Quick bites, refreshing drinks, and healthy meals served hot!</p>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="container">
+        
+        <!-- Menu Section -->
+        <section id="menu">
+            <h2 class="section-title">Our Today's Menu</h2>
+
+            <!-- Filter Buttons -->
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterMenu('all')">All</button>
+                <button class="filter-btn" onclick="filterMenu('breakfast')">Breakfast</button>
+                <button class="filter-btn" onclick="filterMenu('main')">Main Meals</button>
+                <button class="filter-btn" onclick="filterMenu('snacks')">Snacks</button>
+                <button class="filter-btn" onclick="filterMenu('drinks')">Beverages</button>
+            </div>
+
+            <!-- Menu Items Grid -->
+            <div class="menu-grid">
+
+                <!-- Item 1 -->
+                <div class="menu-card breakfast">
+                    <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=500&q=80" alt="Pancakes">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <span class="item-name">Fluffy Pancakes</span>
+                            <span class="item-price">$4.99</span>
+                        </div>
+                        <p class="item-desc">Served with maple syrup, fresh berries, and butter.</p>
+                        <button class="order-btn" onclick="alert('Added Pancakes to order!')">Order Now</button>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="menu-card main">
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80" alt="Cheeseburger">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <span class="item-name">Classic Burger</span>
+                            <span class="item-price">$6.50</span>
+                        </div>
+                        <p class="item-desc">Juicy beef patty with cheese, lettuce, tomato, and special sauce.</p>
+                        <button class="order-btn" onclick="alert('Added Burger to order!')">Order Now</button>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="menu-card main">
+                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=500&q=80" alt="Salad">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <span class="item-name">Veggie Bowl</span>
+                            <span class="item-price">$5.99</span>
+                        </div>
+                        <p class="item-desc">Fresh greens, quinoa, roasted vegetables, and lemon dressing.</p>
+                        <button class="order-btn" onclick="alert('Added Veggie Bowl to order!')">Order Now</button>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="menu-card snacks">
+                    <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&fit=crop&w=500&q=80" alt="French Fries">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <span class="item-name">Crispy Fries</span>
+                            <span class="item-price">$2.99</span>
+                        </div>
+                        <p class="item-desc">Golden seasoned fries served with ketchup and dip.</p>
+                        <button class="order-btn" onclick="alert('Added Fries to order!')">Order Now</button>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="menu-card drinks">
+                    <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=500&q=80" alt="Coffee">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <span class="item-name">Iced Latte</span>
+                            <span class="item-price">$3.50</span>
+                        </div>
+                        <p class="item-desc">Freshly brewed espresso mixed with cold milk and ice.</p>
+                        <button class="order-btn" onclick="alert('Added Coffee to order!')">Order Now</button>
+                    </div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="menu-card drinks">
+                    <img src="https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=500&q=80" alt="Smoothie">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <span class="item-name">Berry Smoothie</span>
+                            <span class="item-price">$4.00</span>
+                        </div>
+                        <p class="item-desc">Blended strawberries, blueberries, banana, and yogurt.</p>
+                        <button class="order-btn" onclick="alert('Added Smoothie to order!')">Order Now</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer / Contact Section -->
+    <footer id="contact">
+        <p><strong>Campus Corner Canteen</strong></p>
+        <p>Opening Hours: Mon - Fri: 8:00 AM - 6:00 PM</p>
+        <p>Contact Us: canteen@campus.edu | Phone: (123) 456-7890</p>
+        <p style="margin-top: 1rem; font-size: 0.8rem; color: #aaa;">&copy; 2026 Campus Canteen. All rights reserved.</p>
+    </footer>
+
+    <!-- Simple JavaScript for Interactive Filtering -->
+    <script>
+        function filterMenu(category) {
+            // Get all menu cards and buttons
+            const cards = document.querySelectorAll('.menu-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            // Manage active button state
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Show/hide cards based on category
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
